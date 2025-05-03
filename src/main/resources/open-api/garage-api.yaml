@@ -1,0 +1,42 @@
+openapi: 3.0.1
+info:
+  title: User API
+  version: 1.0.0
+paths:
+  /generate-qr-code:
+    post:
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/ToolDto'
+      responses:
+        '200':
+          description: Generated QR Code with name
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/QrCodeDto'
+
+components:
+  schemas:
+    ToolDto:
+      type: object
+      properties:
+        name:
+          type: string
+        description:
+          type: string
+        size:
+          type: string
+        color:
+          type: string
+
+    QrCodeDto:
+      type: object
+      properties:
+        name:
+          type: string
+        image:
+          type: string
