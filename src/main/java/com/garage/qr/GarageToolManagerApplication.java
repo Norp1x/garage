@@ -1,4 +1,4 @@
-package com.example.qr;
+package com.garage.qr;
 
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;

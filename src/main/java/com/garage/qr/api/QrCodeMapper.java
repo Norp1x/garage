@@ -1,7 +1,7 @@
-package com.example.qr.api;
+package com.garage.qr.api;
 
-import com.example.qr.domain.QrCode;
-import com.example.qr.model.QrCodeDto;
+import com.garage.qr.domain.QrCode;
+import com.garage.qr.model.QrCodeDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

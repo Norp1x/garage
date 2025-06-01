@@ -1,4 +1,4 @@
-package com.example.qr.domain;
+package com.garage.qr.domain;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -53,7 +53,7 @@ public class GenerateQrImageService {
         try {
             Path qrCodesDirectoryPath = Paths.get(QR_CODES_DIRECTORY);
             Files.createDirectories(qrCodesDirectoryPath);
-            String fileName = tool.getName() + IMAGE_EXTENSION_TYPE;
+            String fileName = tool.name() + IMAGE_EXTENSION_TYPE;
             Path qrCodePath = qrCodesDirectoryPath.resolve(fileName);
 
             String toolJson = convertToolToJson(tool);
@@ -124,7 +124,7 @@ public class GenerateQrImageService {
     private String extractToolNameFromJson(String json) {
         try {
             Tool tool = objectMapper.readValue(json, Tool.class);
-            return tool.getName() != null ? tool.getName() : StringUtils.EMPTY;
+            return tool.name() != null ? tool.name() : StringUtils.EMPTY;
         } catch (JsonProcessingException e) {
             log.warn(COULD_NOT_READ_TOOL_NAME_WARN_LOG, e.getMessage());
             return EXAMPLE_TOOL_NAME;
@@ -134,7 +134,7 @@ public class GenerateQrImageService {
     private String extractToolSizeFromJson(String json) {
         try {
             Tool tool = objectMapper.readValue(json, Tool.class);
-            return tool.getSize() != null ? tool.getSize() : StringUtils.EMPTY;
+            return tool.size() != null ? tool.size() : StringUtils.EMPTY;
         } catch (JsonProcessingException e) {
             log.warn(COULD_NOT_READ_TOOL_SIZE_WARN_LOG, e.getMessage());
             return EXAMPLE_TOOL_SIZE;

@@ -32,6 +32,8 @@ components:
           type: string
         color:
           type: string
+        toolPlacing:
+          type: string
 
     QrCodeDto:
       type: object

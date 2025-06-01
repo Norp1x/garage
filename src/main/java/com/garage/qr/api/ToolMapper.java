@@ -1,7 +1,7 @@
-package com.example.qr.api;
+package com.garage.qr.api;
 
-import com.example.qr.domain.Tool;
-import com.example.qr.model.ToolDto;
+import com.garage.qr.domain.Tool;
+import com.garage.qr.model.ToolDto;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
 

@@ -1,4 +1,4 @@
-package com.example.qr;
+package com.garage.qr;
 
 import org.junit.jupiter.api.Test;
 import org.springframework.boot.test.context.SpringBootTest;
