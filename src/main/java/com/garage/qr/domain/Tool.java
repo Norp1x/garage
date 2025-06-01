@@ -8,8 +8,10 @@ import lombok.Builder;
  */
 @Builder
 public record Tool(String name,
+                   String type,
                    String description,
                    String size,
                    String color,
+                   String quantity,
                    String toolPlacing) {
 }
