@@ -23,15 +23,29 @@ components:
   schemas:
     ToolDto:
       type: object
+      required:
+        - name
+        - type
+        - toolPlacing
       properties:
         name:
           type: string
+          minLength: 2
+          maxLength: 50
         description:
           type: string
+          maxLength: 200
         size:
           type: string
+          enum:
+            - Small
+            - Medium
+            - Large
         color:
           type: string
+        quantity:
+          type: string
+          pattern: '^[1-9][0-9]*$'
         toolPlacing:
           type: string
 

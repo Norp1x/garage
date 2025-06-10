@@ -10,10 +10,6 @@ import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
 
-/**
- * Created by Norpix on 02.05.2025.
- * Description: GlobalExceptionHandler Class
- */
 @Slf4j
 @ControllerAdvice
 public class GlobalExceptionHandler {

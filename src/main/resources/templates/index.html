@@ -2,20 +2,182 @@
 <html lang="pl" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
-    <title>Strona główna</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Garage Tool Manager</title>
+    <link th:href="@{/css/style.css}" rel="stylesheet">
 </head>
 <body>
-<div th:fragment="content">
-    <div>
-        <input id="searchInput" type="text" placeholder="Szukaj narzędzia...">
-        <ul id="results"></ul>
+<header>
+    <h1>Garage Tool Manager</h1>
+    <nav>
+        <a href="#tools">Narzędzia</a>
+        <a href="#add-tool">Dodaj narzędzie</a>
+        <a href="#scanner">Skaner QR</a>
+    </nav>
+</header>
+
+<main>
+    <!-- Sekcja wyszukiwania -->
+    <section id="search" class="section">
+        <div class="search-container">
+            <input id="searchInput" type="text" placeholder="Szukaj narzędzia..." class="search-input">
+            <div class="search-filters">
+                <select id="typeFilter">
+                    <option value="">Wszystkie typy</option>
+                    <option value="wrench">Klucze</option>
+                    <option value="screwdriver">Śrubokręty</option>
+                    <option value="drill">Wiertarki</option>
+                    <option value="hammer">Młotki</option>
+                </select>
+                <select id="sizeFilter">
+                    <option value="">Wszystkie rozmiary</option>
+                    <option value="SMALL">Małe</option>
+                    <option value="MEDIUM">Średnie</option>
+                    <option value="LARGE">Duże</option>
+                </select>
+            </div>
+        </div>
+    </section>
+
+    <!-- Lista narzędzi -->
+    <section id="tools" class="section">
+        <h2>Lista narzędzi</h2>
+        <div id="results" class="tools-grid">
+            <!-- Narzędzia będą ładowane dynamicznie -->
+        </div>
+    </section>
+
+    <!-- Formularz dodawania narzędzia -->
+    <section id="add-tool" class="section">
+        <h2>Dodaj nowe narzędzie</h2>
+        <form id="toolForm" class="tool-form">
+            <div class="form-group">
+                <label for="name">Nazwa narzędzia *</label>
+                <input type="text" id="name" name="name" required maxlength="50">
+            </div>
+
+            <div class="form-group">
+                <label for="type">Typ narzędzia *</label>
+                <select id="type" name="type" required>
+                    <option value="">Wybierz typ</option>
+                    <option value="wrench">Klucz</option>
+                    <option value="screwdriver">Śrubokręt</option>
+                    <option value="drill">Wiertarka</option>
+                    <option value="hammer">Młotek</option>
+                    <option value="saw">Piła</option>
+                    <option value="other">Inne</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="size">Rozmiar</label>
+                <select id="size" name="size">
+                    <option value="SMALL">Małe</option>
+                    <option value="MEDIUM">Średnie</option>
+                    <option value="LARGE">Duże</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="color">Kolor</label>
+                <input type="text" id="color" name="color" maxlength="20">
+            </div>
+
+            <div class="form-group">
+                <label for="quantity">Ilość *</label>
+                <input type="number" id="quantity" name="quantity" min="1" required>
+            </div>
+
+            <div class="form-group">
+                <label for="toolPlacing">Miejsce przechowywania *</label>
+                <input type="text" id="toolPlacing" name="toolPlacing" required maxlength="100"
+                       placeholder="np. Szafka A, półka 2">
+            </div>
+
+            <div class="form-group">
+                <label for="description">Opis</label>
+                <textarea id="description" name="description" rows="3" maxlength="200"
+                          placeholder="Dodatkowe informacje o narzędziu"></textarea>
+            </div>
+
+            <button type="submit" class="btn btn-primary">Dodaj narzędzie</button>
+        </form>
+    </section>
+
+    <!-- Skaner QR -->
+    <section id="scanner" class="section">
+        <h2>Skaner kodów QR</h2>
+        <div class="scanner-container">
+            <div id="qr-reader" class="qr-reader"></div>
+            <div class="scanner-controls">
+                <button id="qrScanButton" class="btn btn-primary">Uruchom skaner</button>
+                <button id="stopScanButton" class="btn btn-secondary" style="display: none;">
+                    Zatrzymaj skaner
+                </button>
+            </div>
+        </div>
+    </section>
+</main>
+
+<!-- Modal dla wyświetlania QR kodu -->
+<div id="qrModal" class="modal" style="display: none;">
+    <div class="modal-content">
+        <span class="close">&times;</span>
+        <h3>Wygenerowany kod QR</h3>
+        <img id="qrImage" src="" alt="QR Code" class="qr-code-image">
+        <div class="modal-actions">
+            <button class="btn btn-primary" onclick="downloadQRCode()">Pobierz</button>
+            <button class="btn btn-secondary" onclick="printQRCode()">Drukuj</button>
+        </div>
     </div>
-    <div>
-        <button onclick="startQRScanner()">Skanuj QR</button>
-        <div id="qr-reader" style="width:300px;"></div>
-    </div>
-    <script th:src="@{/js/app.js}"></script>
-    <script src="https://unpkg.com/html5-qrcode"></script>
 </div>
+
+<!-- Kontener na powiadomienia -->
+<div id="notifications" class="notifications-container"></div>
+
+<!-- Scripts -->
+<script src="https://unpkg.com/html5-qrcode@2.3.8/html5-qrcode.min.js"></script>
+<script th:src="@{/js/app.js}"></script>
+
+<script>
+    // Obsługa modala
+    document.addEventListener('DOMContentLoaded', function () {
+        const modal = document.getElementById('qrModal');
+        const closeBtn = modal.querySelector('.close');
+
+        closeBtn.onclick = function () {
+            modal.style.display = 'none';
+        }
+
+        window.onclick = function (event) {
+            if (event.target === modal) {
+                modal.style.display = 'none';
+            }
+        }
+    });
+
+    function downloadQRCode() {
+        const img = document.getElementById('qrImage');
+        const link = document.createElement('a');
+        link.download = 'qr-code.png';
+        link.href = img.src;
+        link.click();
+    }
+
+    function printQRCode() {
+        const img = document.getElementById('qrImage');
+        const printWindow = window.open('', '_blank');
+        printWindow.document.write(`
+                <html>
+                    <head><title>QR Code</title></head>
+                    <body style="display: flex; justify-content: center; align-items: center; height: 100vh; margin: 0;">
+                        <img src="${img.src}" style="max-width: 100%; max-height: 100%;">
+                    </body>
+                </html>
+            `);
+        printWindow.document.close();
+        printWindow.print();
+    }
+</script>
 </body>
 </html>

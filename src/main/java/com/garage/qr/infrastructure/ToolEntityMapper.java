@@ -1,6 +1,5 @@
-package com.garage.qr.api;
+package com.garage.qr.infrastructure;
 
-import com.example.qr.model.ToolDto;
 import com.garage.qr.domain.Tool;
 import org.mapstruct.Mapper;
 import org.mapstruct.ReportingPolicy;
@@ -8,9 +7,9 @@ import org.mapstruct.ReportingPolicy;
 import static org.mapstruct.MappingConstants.ComponentModel.SPRING;
 
 @Mapper(unmappedTargetPolicy = ReportingPolicy.IGNORE, componentModel = SPRING)
-public interface ToolMapper {
+public interface ToolEntityMapper {
 
-    ToolDto toDto(Tool tool);
+    ToolEntity mapToEntity(Tool tool);
 
-    Tool mapToTool(ToolDto toolDto);
+    Tool mapToTool(ToolEntity toolEntity);
 }
