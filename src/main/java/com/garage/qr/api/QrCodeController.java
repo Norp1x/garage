@@ -3,7 +3,9 @@ package com.garage.qr.api;
 import com.example.qr.model.QrCodeDto;
 import com.example.qr.model.ToolDto;
 import com.garage.qr.domain.GenerateQrImageService;
+import com.garage.qr.domain.ToolService;
 import jakarta.validation.Valid;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
@@ -14,20 +16,14 @@ import java.util.List;
 @Slf4j
 @Validated
 @RestController
+@RequiredArgsConstructor
 @RequestMapping("/api/v1/garage")
 public class QrCodeController {
 
     private final GenerateQrImageService generateQrImageService;
     private final ToolMapper toolMapper;
+    private final ToolService toolService;
     private final QrCodeMapper qrCodeMapper;
-
-    public QrCodeController(GenerateQrImageService generateQrImageService,
-                            ToolMapper toolMapper,
-                            QrCodeMapper qrCodeMapper) {
-        this.generateQrImageService = generateQrImageService;
-        this.toolMapper = toolMapper;
-        this.qrCodeMapper = qrCodeMapper;
-    }
 
     @PostMapping("/generate-qr-code")
     public ResponseEntity<QrCodeDto> generateQrCode(@Valid @RequestBody ToolDto toolDto) {
@@ -37,6 +33,12 @@ public class QrCodeController {
         final var qrCodeDto = qrCodeMapper.toDto(qrCode);
 
         return ResponseEntity.ok(qrCodeDto);
+    }
+
+    @GetMapping("/generate-qr-code-from-existing-name")
+    public ResponseEntity<QrCodeDto> get(@RequestParam String name) {
+        final var qrCode = toolService.generateQrCodeForTool(name);
+        return ResponseEntity.ok(qrCodeMapper.toDto(qrCode));
     }
 
     @PostMapping("/decode-qr-code")

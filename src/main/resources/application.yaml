@@ -17,7 +17,7 @@ spring:
     hibernate:
       ddl-auto: ${DDL_AUTO:validate} # update tylko w dev
       naming:
-        physical-strategy: org.hibernate.boot.model.naming.SnakeCasePhysicalNamingStrategy
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
     show-sql: ${SHOW_SQL:false}
     properties:
       hibernate:

@@ -3,7 +3,7 @@ package com.garage.qr.infrastructure;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Data;
+import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
@@ -13,8 +13,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 @Entity
+@Getter
 @Table(name = "tools")
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

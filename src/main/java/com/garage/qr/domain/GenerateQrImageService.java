@@ -46,7 +46,7 @@ public class GenerateQrImageService {
     private static final String COULD_NOT_READ_TOOL_NAME_WARN_LOG = "Could not read tool name from JSON: {}";
     private static final String EXAMPLE_TOOL_NAME = "Example Tool";
     private static final String COULD_NOT_READ_TOOL_SIZE_WARN_LOG = "Could not read tool size from JSON: {}";
-    private static final String EXAMPLE_TOOL_SIZE = "Small/Medium/Large";
+    public static final String EXAMPLE_TOOL_SIZE = "Small/Medium/Large";
     private final ObjectMapper objectMapper = new ObjectMapper();
 
     public QrCode generateQRCode(Tool tool) {
@@ -131,7 +131,7 @@ public class GenerateQrImageService {
         }
     }
 
-    private String extractToolSizeFromJson(String json) {
+    String extractToolSizeFromJson(String json) {
         try {
             Tool tool = objectMapper.readValue(json, Tool.class);
             return tool.size() != null ? tool.size() : StringUtils.EMPTY;
